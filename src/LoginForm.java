@@ -22,6 +22,8 @@ public class LoginForm extends WindowAdapter implements ActionListener{
     private GridBagLayout gbl = new GridBagLayout();
     private GridBagConstraints gbc;
 
+    private ImageIcon imageIcon;
+
     //constructor
     public LoginForm()
     {
@@ -78,6 +80,10 @@ public class LoginForm extends WindowAdapter implements ActionListener{
         gbl = new GridBagLayout();
         frame.setLayout(gbl);
         gbc = new GridBagConstraints();
+
+        imageIcon = new ImageIcon("C:/Users/pc/Desktop/225.jpg");
+        Image img = imageIcon.getImage();
+        frame.setIconImage(img);
     }
 
     private void createComp (){
@@ -93,6 +99,7 @@ public class LoginForm extends WindowAdapter implements ActionListener{
         loginButton = new JButton("login ");
         resetButton = new JButton("reset ");
         signUpButton = new JButton("signUp ");
+
     }
 
     private void addComp(){
