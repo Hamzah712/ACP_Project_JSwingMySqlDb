@@ -1,3 +1,8 @@
+package view;
+
+import UiUtils.UIUtils;
+import db.UserDAO;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -5,19 +10,18 @@ import java.awt.event.*;
 public class LoginForm extends WindowAdapter implements ActionListener{
 
     //declaring objects
-
     private JFrame frame;
     private JTextField usernameField;
     private JPasswordField passwordField;
 
     private JButton loginButton;
     private JButton resetButton;
-    private JButton signUpButton;
+    private JButton addNewButton;
 
     private JLabel welcomeLabel;
     private JLabel usernameLabel;
     private JLabel passwordLabel;
-    private JLabel signUpLabel;
+    private JLabel addNewLabel;
 
     private GridBagLayout gbl = new GridBagLayout();
     private GridBagConstraints gbc;
@@ -31,7 +35,6 @@ public class LoginForm extends WindowAdapter implements ActionListener{
         createComp();
         addComp();
         addActionListener();
-
         frame.setSize(350,350);
         frame.setVisible(true);
     }
@@ -49,19 +52,21 @@ public class LoginForm extends WindowAdapter implements ActionListener{
         if(e.getSource() == resetButton) {
             usernameField.setText("");
             passwordField.setText("");
-        } else if (e.getSource() == signUpButton) {
+        } else if (e.getSource() == addNewButton) {
             new SignupForm();
             frame.dispose();
         } else if (e.getSource() == loginButton) {
-            if (username.isBlank() && password.isBlank()) {
+            if (username.isBlank() || password.isBlank()) {
                 JOptionPane.showMessageDialog(frame, "Fields cannot be empty", "Error", JOptionPane.ERROR_MESSAGE);
-            }else if (username.isBlank()) {
-                JOptionPane.showMessageDialog(frame, "Username cannot be empty", "Error", JOptionPane.ERROR_MESSAGE);
-            } else if (password.isBlank()) {
-                JOptionPane.showMessageDialog(frame, "Password cannot be empty", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
-                // Additional validation can be added here (e.g., check credentials against a database)
-                JOptionPane.showMessageDialog(frame, "Login successful", "Success", JOptionPane.INFORMATION_MESSAGE);
+                UserDAO userDAO = new UserDAO();
+                boolean isValidLogin = userDAO.checkLogin(username, password);
+                if (isValidLogin) {
+                    JOptionPane.showMessageDialog(frame, "Login successful", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    // Proceed with application logic after successful login
+                } else {
+                    JOptionPane.showMessageDialog(frame, "Invalid username or password", "Login Failed", JOptionPane.ERROR_MESSAGE);
+                }
             }
 
 
@@ -69,11 +74,6 @@ public class LoginForm extends WindowAdapter implements ActionListener{
     }
 
     private void setUpFrame(){
-        try{
-            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-        } catch (Exception e){
-            e.printStackTrace();
-        }
 
         frame = new JFrame("Login Form");
         frame.setLocationRelativeTo(null);
@@ -81,9 +81,8 @@ public class LoginForm extends WindowAdapter implements ActionListener{
         frame.setLayout(gbl);
         gbc = new GridBagConstraints();
 
-        imageIcon = new ImageIcon("C:/Users/pc/Desktop/225.jpg");
-        Image img = imageIcon.getImage();
-        frame.setIconImage(img);
+        UIUtils.setLookAndFeel();
+        UIUtils.setFrameIcon(frame, "img/fLogo.png");
     }
 
     private void createComp (){
@@ -91,14 +90,14 @@ public class LoginForm extends WindowAdapter implements ActionListener{
         welcomeLabel = new JLabel("Welcome :) ");
         usernameLabel = new JLabel("Username: ");
         passwordLabel = new JLabel("Password: ");
-        signUpLabel = new JLabel("not registered? ");
+        addNewLabel = new JLabel("not registered? ");
 
         usernameField = new JTextField(15);
         passwordField = new JPasswordField(15);
 
         loginButton = new JButton("login ");
         resetButton = new JButton("reset ");
-        signUpButton = new JButton("signUp ");
+        addNewButton = new JButton("add new ");
 
     }
 
@@ -123,7 +122,7 @@ public class LoginForm extends WindowAdapter implements ActionListener{
         frame.add(passwordLabel, gbc);
 
         gbc.gridy = 4;
-        frame.add(signUpLabel,gbc);
+        frame.add(addNewLabel,gbc);
 
         gbc.gridx = 1;
         gbc.gridy = 3;
@@ -135,7 +134,7 @@ public class LoginForm extends WindowAdapter implements ActionListener{
         gbc.gridx = 1;
         gbc.gridy = 4;
         gbc.gridwidth = 2;
-        frame.add(signUpButton, gbc);
+        frame.add(addNewButton, gbc);
 
         gbc.gridx = 1;
         gbc.gridy = 1;
@@ -149,7 +148,7 @@ public class LoginForm extends WindowAdapter implements ActionListener{
         // add action listener
         loginButton.addActionListener(this);
         resetButton.addActionListener(this);
-        signUpButton.addActionListener(this);
+        addNewButton.addActionListener(this);
     }
 }
 
