@@ -31,7 +31,7 @@ public class SignupForm extends WindowAdapter implements ActionListener {
 
     private void setUpFrame() {
         signupFrame = new JFrame();
-        signupFrame.setTitle("Signup Form");
+        signupFrame.setTitle("Admin Signup Form");
         UIUtils.setLookAndFeel();
         UIUtils.setFrameIcon(signupFrame, "img/fLogo.png");
     }
@@ -134,7 +134,7 @@ public class SignupForm extends WindowAdapter implements ActionListener {
             userDAO.addUser(newUser);
 
             // Optionally, show success message or clear fields
-            JOptionPane.showMessageDialog(signupFrame, "User added successfully.");
+            JOptionPane.showMessageDialog(signupFrame, "User added successfully. Please Proceed to login");
             fullNameField.setText("");
             phoneNumberField.setText("");
             addressField.setText("");

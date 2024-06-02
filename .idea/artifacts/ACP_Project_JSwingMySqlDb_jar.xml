@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="ACP_Project_JSwingMySqlDb:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/ACP_Project_JSwingMySqlDb_jar</output-path>
+    <root id="archive" name="ACP_Project_JSwingMySqlDb.jar">
+      <element id="module-output" name="ACP_Project_JSwingMySqlDb" />
+      <element id="extracted-dir" path="$USER_HOME$/Downloads/mysql-connector-j-8.1.0/mysql-connector-j-8.1.0/mysql-connector-j-8.1.0.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

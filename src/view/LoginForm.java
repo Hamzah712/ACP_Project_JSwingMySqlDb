@@ -26,8 +26,6 @@ public class LoginForm extends WindowAdapter implements ActionListener{
     private GridBagLayout gbl = new GridBagLayout();
     private GridBagConstraints gbc;
 
-    private ImageIcon imageIcon;
-
     //constructor
     public LoginForm()
     {
@@ -52,6 +50,7 @@ public class LoginForm extends WindowAdapter implements ActionListener{
         if(e.getSource() == resetButton) {
             usernameField.setText("");
             passwordField.setText("");
+            new MainFrame("");
         } else if (e.getSource() == addNewButton) {
             new SignupForm();
             frame.dispose();
@@ -64,6 +63,8 @@ public class LoginForm extends WindowAdapter implements ActionListener{
                 if (isValidLogin) {
                     JOptionPane.showMessageDialog(frame, "Login successful", "Success", JOptionPane.INFORMATION_MESSAGE);
                     // Proceed with application logic after successful login
+                    frame.dispose();
+                    new MainFrame("Hamzah"); //dummy name until we implement the logic
                 } else {
                     JOptionPane.showMessageDialog(frame, "Invalid username or password", "Login Failed", JOptionPane.ERROR_MESSAGE);
                 }
@@ -75,7 +76,7 @@ public class LoginForm extends WindowAdapter implements ActionListener{
 
     private void setUpFrame(){
 
-        frame = new JFrame("Login Form");
+        frame = new JFrame("Admin Login Form");
         frame.setLocationRelativeTo(null);
         gbl = new GridBagLayout();
         frame.setLayout(gbl);
