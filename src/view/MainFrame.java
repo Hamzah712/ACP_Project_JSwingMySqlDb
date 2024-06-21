@@ -45,7 +45,7 @@ public class MainFrame extends WindowAdapter implements ActionListener {
         frame.setSize(620, 410);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
-        frame.setResizable(false); // Make frame unexpandable
+        frame.setResizable(false);
     }
 
     private void addHeaderPanel(String adminName) {

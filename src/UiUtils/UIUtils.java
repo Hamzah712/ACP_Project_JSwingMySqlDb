@@ -4,6 +4,8 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+// I love this class but Please change its folder structure
+
 public class UIUtils {
 
     // Method to set the frame icon from a file path

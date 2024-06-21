@@ -22,7 +22,7 @@ public class Book {
         this.status = status;
     }
 
-    // Constructor for book details with issue/return information
+    // Constructor for book details with issue/return information  //idk why the fuck do I have this
     public Book(int id, String title, String author, String publisher, int year, String status, String issueDate, String returnDate, int memberId) {
         this.id = id;
         this.title = title;

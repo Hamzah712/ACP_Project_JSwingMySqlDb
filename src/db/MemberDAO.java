@@ -25,8 +25,10 @@ public class MemberDAO {
     }
 
     public void updateMember(Member member) {
+        String query = "UPDATE members_tb SET first_name = ?, last_name = ?, age = ?, gender = ?, membership_date = ? WHERE id = ?";
+
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement("UPDATE members_tb SET first_name = ?, last_name = ?, age = ?, gender = ?, membership_date = ? WHERE id = ?")) {
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
 
             pstmt.setString(1, member.getFirstName());
             pstmt.setString(2, member.getLastName());

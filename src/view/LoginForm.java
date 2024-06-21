@@ -2,6 +2,7 @@ package view;
 
 import UiUtils.UIUtils;
 import db.UserDAO;
+import model.User;
 
 import javax.swing.*;
 import java.awt.*;
@@ -50,7 +51,7 @@ public class LoginForm extends WindowAdapter implements ActionListener{
         if(e.getSource() == resetButton) {
             usernameField.setText("");
             passwordField.setText("");
-            new MainFrame("");
+            new MainFrame("");//****************************88*
         } else if (e.getSource() == addNewButton) {
             new SignupForm();
             frame.dispose();
@@ -64,13 +65,11 @@ public class LoginForm extends WindowAdapter implements ActionListener{
                     JOptionPane.showMessageDialog(frame, "Login successful", "Success", JOptionPane.INFORMATION_MESSAGE);
                     // Proceed with application logic after successful login
                     frame.dispose();
-                    new MainFrame("Hamzah"); //dummy name until we implement the logic
+                    new MainFrame("Dummy"); //dummy name until we implement the logic
                 } else {
                     JOptionPane.showMessageDialog(frame, "Invalid username or password", "Login Failed", JOptionPane.ERROR_MESSAGE);
                 }
             }
-
-
         }
     }
 

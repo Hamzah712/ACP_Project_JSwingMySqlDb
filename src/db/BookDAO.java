@@ -124,40 +124,69 @@ public class BookDAO {
             e.printStackTrace();
         }
     }
+//          WTH IS THIS!!!
+//    public void returnBook(int bookId) {
+//        String updateReturnDateQuery = "UPDATE issued_books_tb SET return_date = CURRENT_DATE WHERE book_id = ? AND return_date IS NULL";
+//        String deleteIssuedBookQuery = "DELETE FROM issued_books_tb WHERE book_id = ? AND return_date IS NOT NULL";
+//        String updateBookStatusQuery = "UPDATE books_tb SET status = 'available' WHERE id = ?";
+//
+//        try (Connection conn = DatabaseConnection.getConnection();
+//             PreparedStatement updateReturnDateStmt = conn.prepareStatement(updateReturnDateQuery);
+//             PreparedStatement deleteIssuedBookStmt = conn.prepareStatement(deleteIssuedBookQuery);
+//             PreparedStatement updateBookStatusStmt = conn.prepareStatement(updateBookStatusQuery)) {
+//
+//            // Update the return date
+//            updateReturnDateStmt.setInt(1, bookId);
+//            int updatedRows = updateReturnDateStmt.executeUpdate();
+//
+//            if (updatedRows > 0) {
+//                // Delete the record from issued_books_tb where return_date is not null
+//                deleteIssuedBookStmt.setInt(1, bookId);
+//                deleteIssuedBookStmt.executeUpdate();
+//
+//                // Update the book status to 'available'
+//                updateBookStatusStmt.setInt(1, bookId);
+//                updateBookStatusStmt.executeUpdate();
+//
+//                System.out.println("Book with ID: " + bookId + " successfully returned.");
+//            } else {
+//                // Handle case where book with specified ID was not found in issued_books_tb
+//                System.out.println("No book found in issued_books_tb with ID: " + bookId + " that needs to be returned.");
+//            }
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     public void returnBook(int bookId) {
-        String updateReturnDateQuery = "UPDATE issued_books_tb SET return_date = CURRENT_DATE WHERE book_id = ? AND return_date IS NULL";
-        String deleteIssuedBookQuery = "DELETE FROM issued_books_tb WHERE book_id = ? AND return_date IS NOT NULL";
+        String deleteIssuedBookQuery = "DELETE FROM issued_books_tb WHERE book_id = ?";
         String updateBookStatusQuery = "UPDATE books_tb SET status = 'available' WHERE id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement updateReturnDateStmt = conn.prepareStatement(updateReturnDateQuery);
              PreparedStatement deleteIssuedBookStmt = conn.prepareStatement(deleteIssuedBookQuery);
              PreparedStatement updateBookStatusStmt = conn.prepareStatement(updateBookStatusQuery)) {
 
-            // Update the return date
-            updateReturnDateStmt.setInt(1, bookId);
-            int updatedRows = updateReturnDateStmt.executeUpdate();
+            // Delete the book from the issued_books_tb table
+            deleteIssuedBookStmt.setInt(1, bookId);
+            int rowsAffected = deleteIssuedBookStmt.executeUpdate();
 
-            if (updatedRows > 0) {
-                // Delete the record from issued_books_tb where return_date is not null
-                deleteIssuedBookStmt.setInt(1, bookId);
-                deleteIssuedBookStmt.executeUpdate();
-
+            if (rowsAffected > 0) {
                 // Update the book status to 'available'
                 updateBookStatusStmt.setInt(1, bookId);
                 updateBookStatusStmt.executeUpdate();
 
-                System.out.println("Book with ID: " + bookId + " successfully returned.");
+                System.out.println("Book with ID: " + bookId + " successfully returned and marked as available.");
             } else {
                 // Handle case where book with specified ID was not found in issued_books_tb
-                System.out.println("No book found in issued_books_tb with ID: " + bookId + " that needs to be returned.");
+                System.out.println("No book found in issued_books_tb with ID: " + bookId + ".");
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
 
     // Method to update the status of a book
     private void updateBookStatus(int bookId, String status) {

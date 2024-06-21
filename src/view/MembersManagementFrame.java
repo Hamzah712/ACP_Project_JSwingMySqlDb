@@ -1,15 +1,5 @@
 package view;
 
-import UiUtils.UIUtils;
-import db.MemberDAO;
-import model.Member;
-
-import javax.swing.*;
-import javax.swing.border.LineBorder;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,17 +7,28 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import javax.swing.*;
+import javax.swing.border.LineBorder;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+
+import db.MemberDAO;
+import model.Member;
+import UiUtils.UIUtils;
+
 public class MembersManagementFrame {
 
     private JFrame managementFrame;
     private JTable table;
     private JTextField firstNameField;
+    private JTextField idField;
     private JTextField lastNameField;
     private JTextField ageField;
     private JTextField membershipDateField;
     private JComboBox<String> genderSelectionBox;
     private MemberDAO memberDAO;
-
 
     public MembersManagementFrame() {
         memberDAO = new MemberDAO();
@@ -60,10 +61,11 @@ public class MembersManagementFrame {
 
         table = new JTable();
         tableScrollPane.setViewportView(table);
-        table.setColumnSelectionAllowed(true);
-        table.setModel(new DefaultTableModel(new Object[][]{},
-                new String[]{"ID", "First Name", "Last Name", "Age", "Gender", "Membership Date"}) {
-            boolean[] columnEditables = new boolean[]{false, true, true, true, true, true};
+        table.setColumnSelectionAllowed(false);
+        table.setRowSelectionAllowed(true);
+        table.setModel(new DefaultTableModel(new Object[][] {},
+                new String[] { "ID", "First Name", "Last Name", "Age", "Gender", "Membership Date" }) {
+            boolean[] columnEditables = new boolean[] { false, true, true, true, true, true };
 
             public boolean isCellEditable(int row, int column) {
                 return columnEditables[column];
@@ -170,54 +172,67 @@ public class MembersManagementFrame {
     }
 
     private void addMemberFields(JPanel memberPanel) {
+
+        JLabel idText = new JLabel("ID:");
+        idText.setFont(new Font("Tahoma", Font.PLAIN, 16));
+        idText.setBounds(10, 20, 100, 25);
+        memberPanel.add(idText);
+
+        idField = new JTextField();
+        idField.setBounds(120, 20, 110, 25);
+        memberPanel.add(idField);
+        idField.setColumns(10);
+
         JLabel firstNameText = new JLabel("First Name:");
         firstNameText.setFont(new Font("Tahoma", Font.PLAIN, 16));
-        firstNameText.setBounds(10, 22, 100, 25);
+        firstNameText.setBounds(10, 60, 100, 25);
         memberPanel.add(firstNameText);
 
         firstNameField = new JTextField();
-        firstNameField.setBounds(120, 23, 110, 25);
+        firstNameField.setBounds(120, 60, 110, 25);
         memberPanel.add(firstNameField);
         firstNameField.setColumns(10);
 
         JLabel lastNameText = new JLabel("Last Name:");
         lastNameText.setFont(new Font("Tahoma", Font.PLAIN, 16));
-        lastNameText.setBounds(10, 62, 100, 25);
+        lastNameText.setBounds(10, 100, 100, 25);
         memberPanel.add(lastNameText);
 
         lastNameField = new JTextField();
-        lastNameField.setColumns(10);
-        lastNameField.setBounds(120, 63, 110, 25);
+        lastNameField.setBounds(120, 100, 110, 25);
         memberPanel.add(lastNameField);
+        lastNameField.setColumns(10);
 
         JLabel ageText = new JLabel("Age:");
         ageText.setFont(new Font("Tahoma", Font.PLAIN, 16));
-        ageText.setBounds(10, 102, 100, 25);
+        ageText.setBounds(10, 140, 100, 25);
         memberPanel.add(ageText);
 
         ageField = new JTextField();
-        ageField.setColumns(10);
-        ageField.setBounds(120, 103, 110, 25);
+        ageField.setFont(new Font("Tahoma", Font.PLAIN, 16));
+        ageField.setBounds(120, 140, 110, 25);
         memberPanel.add(ageField);
+        ageField.setColumns(10);
 
         JLabel genderText = new JLabel("Gender:");
         genderText.setFont(new Font("Tahoma", Font.PLAIN, 16));
-        genderText.setBounds(10, 142, 100, 25);
+        genderText.setBounds(10, 180, 100, 25);
         memberPanel.add(genderText);
 
-        genderSelectionBox = new JComboBox<>(new String[]{"Male", "Female", "Other"});
-        genderSelectionBox.setBounds(120, 143, 110, 25);
+        genderSelectionBox = new JComboBox<>(new String[] { "Male", "Female", "Other" });
+        genderSelectionBox.setBounds(120, 180, 110, 25);
         memberPanel.add(genderSelectionBox);
 
         JLabel membershipDateText = new JLabel("Membership Date:");
         membershipDateText.setFont(new Font("Tahoma", Font.PLAIN, 16));
-        membershipDateText.setBounds(10, 182, 150, 25);
+        membershipDateText.setBounds(10, 220, 150, 25);
         memberPanel.add(membershipDateText);
 
         membershipDateField = new JTextField();
-        membershipDateField.setBounds(140, 183, 90, 25);
+        membershipDateField.setBounds(140, 220, 90, 25);
         memberPanel.add(membershipDateField);
         membershipDateField.setColumns(10);
+
     }
 
     private boolean isValidDate(String date) {
@@ -269,27 +284,29 @@ public class MembersManagementFrame {
             JOptionPane.showMessageDialog(managementFrame, "Please select a member to update.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        try {
+            int id = Integer.parseInt(idField.getText());
+            String firstName = firstNameField.getText();
+            String lastName = lastNameField.getText();
+            int age = Integer.parseInt(ageField.getText());
+            String gender = String.valueOf(genderSelectionBox.getSelectedItem());
+            String membershipDate = membershipDateField.getText();
 
-        DefaultTableModel model = (DefaultTableModel) table.getModel();
-        int id = (int) model.getValueAt(selectedRow, 0);
-        String firstName = (String) model.getValueAt(selectedRow, 1);
-        String lastName = (String) model.getValueAt(selectedRow, 2);
-        int age = Integer.parseInt(model.getValueAt(selectedRow, 3).toString());
-        String gender = (String) model.getValueAt(selectedRow, 4);
-        String membershipDate = (String) model.getValueAt(selectedRow, 5);
-
-        if (firstName.isEmpty() || lastName.isEmpty() || age == 0 || gender.isEmpty() || membershipDate.isEmpty()) {
-            JOptionPane.showMessageDialog(managementFrame, "Please fill all the fields.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
+            Member updatedMember = new Member(id, firstName, lastName, age, gender, membershipDate);
+            memberDAO.updateMember(updatedMember);
+            table.setValueAt(id, selectedRow, 0);
+            table.setValueAt(firstName, selectedRow, 1);
+            table.setValueAt(lastName, selectedRow, 2);
+            table.setValueAt(age, selectedRow, 3);
+            table.setValueAt(gender, selectedRow, 4);
+            table.setValueAt(membershipDate, selectedRow, 5);
+            clearFields();
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(managementFrame, "Invalid input format.", "Error", JOptionPane.ERROR_MESSAGE);
         }
-
-        Member member = new Member(id, firstName, lastName, age, gender, membershipDate);
-        memberDAO.updateMember(member);
-        loadMembers();
-        JOptionPane.showMessageDialog(managementFrame, "Member successfully updated.", "Success", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    private void deleteMember() {
+        private void deleteMember() {
         int selectedRow = table.getSelectedRow();
         if (selectedRow == -1) {
             JOptionPane.showMessageDialog(managementFrame, "Please select a member to delete.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -309,11 +326,12 @@ public class MembersManagementFrame {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
         for (Member member : members) {
-            model.addRow(new Object[]{member.getId(), member.getFirstName(), member.getLastName(), member.getAge(), member.getGender(), member.getMembershipDate()});
+            model.addRow(new Object[] { member.getId(), member.getFirstName(), member.getLastName(), member.getAge(), member.getGender(), member.getMembershipDate() });
         }
     }
 
     private void clearFields() {
+        idField.setText("");
         firstNameField.setText("");
         lastNameField.setText("");
         ageField.setText("");
