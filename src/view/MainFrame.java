@@ -1,6 +1,10 @@
 package view;
 
 import UiUtils.UIUtils;
+import db.BookDAO;
+import db.UserDAO;
+import model.LoggedInUser;
+import model.User;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -23,12 +27,19 @@ public class MainFrame extends WindowAdapter implements ActionListener {
     private JLabel lblBooksIssuedToday;
     private JLabel lblBooksReturnedToday;
 
-    public MainFrame(String adminName) {
+    private BookDAO bookDAO;
+    private UserDAO userDAO;
+
+    public MainFrame() {
         initializeFrame();
         UIUtils.setLookAndFeel();
         UIUtils.setFrameIcon(frame, "img/fLogo.png");
 
-        addHeaderPanel(adminName);
+
+        this.bookDAO = new BookDAO();
+        this.userDAO = new UserDAO();
+
+        addHeaderPanel();
         addNavigationPanel();
         addMainContentPanel();
         addFooterPanel();
@@ -48,15 +59,18 @@ public class MainFrame extends WindowAdapter implements ActionListener {
         frame.setResizable(false);
     }
 
-    private void addHeaderPanel(String adminName) {
+    private void addHeaderPanel() {
+
+        User currentUser = LoggedInUser.getInstance().getUser();
+
         JPanel headerPanel = new JPanel(null);
         headerPanel.setBounds(10, 10, 580, 30);
-        JLabel lblWelcome = new JLabel("Welcome, " + adminName);
+        JLabel lblWelcome = new JLabel("Welcome, " + currentUser.getFullName());
         lblWelcome.setFont(new Font("Tahoma", Font.BOLD, 16));
         lblWelcome.setBounds(0, 0, 580, 30);
         lblWelcome.setHorizontalAlignment(SwingConstants.CENTER);
         headerPanel.add(lblWelcome);
-        headerPanel.setBorder(new LineBorder(new Color(0, 120, 215), 2));
+        headerPanel.setBorder(new LineBorder(new Color(0, 120, 215), 5));
         frame.add(headerPanel);
     }
 
@@ -82,14 +96,14 @@ public class MainFrame extends WindowAdapter implements ActionListener {
         navPanel.add(btnReturnBook);
         navPanel.add(btnLogout);
 
-        navPanel.setBorder(new LineBorder(new Color(0, 120, 215), 2));
+        navPanel.setBorder(new LineBorder(new Color(0, 120, 215), 5));
         frame.add(navPanel);
     }
 
     private void addMainContentPanel() {
         JPanel mainContentPanel = new JPanel(null);
         mainContentPanel.setBounds(10, 110, 580, 205);
-        mainContentPanel.setBorder(new LineBorder(new Color(0, 120, 215), 2));
+        mainContentPanel.setBorder(new LineBorder(new Color(0, 120, 215), 5));
 
         lblTotalBooks = new JLabel("Total Books: ");
         lblTotalBooks.setBounds(5, 10, 580, 30);
@@ -122,7 +136,7 @@ public class MainFrame extends WindowAdapter implements ActionListener {
         lblFooter.setBounds(0, 0, 570, 30);
         lblFooter.setHorizontalAlignment(SwingConstants.RIGHT);
         footerPanel.add(lblFooter);
-        footerPanel.setBorder(new LineBorder(new Color(0, 120, 215), 2));
+        footerPanel.setBorder(new LineBorder(new Color(0, 120, 215), 5));
         frame.add(footerPanel);
     }
 
@@ -157,22 +171,21 @@ public class MainFrame extends WindowAdapter implements ActionListener {
         super.windowClosing(e);
     }
 
-    // Dummy methods until I feel like implementing them
-    // replace this with actual implementation if you have time.
+    // implemented :)
     private int getTotalBooks() {
-        return 150;
+        return bookDAO.getTotalBooks();
     }
 
     private int getTotalMembers() {
-        return 75;
+        return bookDAO.getTotalMembers();
     }
 
     private int getBooksIssuedToday() {
-        return 5;
+        return bookDAO.getBooksIssuedToday();
     }
 
     private int getBooksReturnedToday() {
-        return 3;
+        return bookDAO.getBooksReturnedToday();
     }
 
     public void updateDashboardStatistics() {

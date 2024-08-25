@@ -51,7 +51,6 @@ public class LoginForm extends WindowAdapter implements ActionListener{
         if(e.getSource() == resetButton) {
             usernameField.setText("");
             passwordField.setText("");
-            new MainFrame("");//****************************88*
         } else if (e.getSource() == addNewButton) {
             new SignupForm();
             frame.dispose();
@@ -65,7 +64,7 @@ public class LoginForm extends WindowAdapter implements ActionListener{
                     JOptionPane.showMessageDialog(frame, "Login successful", "Success", JOptionPane.INFORMATION_MESSAGE);
                     // Proceed with application logic after successful login
                     frame.dispose();
-                    new MainFrame("Dummy"); //dummy name until we implement the logic
+                    new MainFrame(); //dummy name until we implement the logic
                 } else {
                     JOptionPane.showMessageDialog(frame, "Invalid username or password", "Login Failed", JOptionPane.ERROR_MESSAGE);
                 }

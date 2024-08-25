@@ -135,7 +135,7 @@ public class IssueReturnBooksFrame {
         homeButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 managementFrame.dispose();
-                new MainFrame(" ");
+                new MainFrame();
             }
         });
         buttonsPanel.add(homeButton);

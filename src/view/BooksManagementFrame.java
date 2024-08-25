@@ -200,7 +200,7 @@ public class BooksManagementFrame {
         homeButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 managementFrame.dispose();
-                new MainFrame("Admin Name");
+                new MainFrame();
             }
         });
         buttonsPanel.add(homeButton);
