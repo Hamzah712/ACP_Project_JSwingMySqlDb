@@ -54,22 +54,4 @@ public class UserDAO {
 
         return isValidLogin;
     }
-
-    public String getUsername(String username) {
-        String currentUsername = "current user Not Found!!!";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM users_tb WHERE full_name = ?")) {
-
-            pstmt.setString(1, username);
-            
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-                currentUsername = rs.getString("full_name");
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return currentUsername;
-    }
 }
