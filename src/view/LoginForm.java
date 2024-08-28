@@ -10,7 +10,6 @@ import java.awt.event.*;
 
 public class LoginForm extends WindowAdapter implements ActionListener{
 
-    //declaring objects
     private JFrame frame;
     private JTextField usernameField;
     private JPasswordField passwordField;
@@ -18,11 +17,13 @@ public class LoginForm extends WindowAdapter implements ActionListener{
     private JButton loginButton;
     private JButton resetButton;
     private JButton addNewButton;
+    private JButton guestButton;
 
     private JLabel welcomeLabel;
     private JLabel usernameLabel;
     private JLabel passwordLabel;
     private JLabel addNewLabel;
+    private JLabel guestLabel;
 
     private GridBagLayout gbl = new GridBagLayout();
     private GridBagConstraints gbc;
@@ -54,6 +55,9 @@ public class LoginForm extends WindowAdapter implements ActionListener{
         } else if (e.getSource() == addNewButton) {
             new SignupForm();
             frame.dispose();
+        } else if (e.getSource() == guestButton) {
+            new MainFrame();
+            frame.dispose();
         } else if (e.getSource() == loginButton) {
             if (username.isBlank() || password.isBlank()) {
                 JOptionPane.showMessageDialog(frame, "Fields cannot be empty", "Error", JOptionPane.ERROR_MESSAGE);
@@ -62,9 +66,8 @@ public class LoginForm extends WindowAdapter implements ActionListener{
                 boolean isValidLogin = userDAO.checkLogin(username, password);
                 if (isValidLogin) {
                     JOptionPane.showMessageDialog(frame, "Login successful", "Success", JOptionPane.INFORMATION_MESSAGE);
-                    // Proceed with application logic after successful login
                     frame.dispose();
-                    new MainFrame(); //dummy name until we implement the logic
+                    new MainFrame();
                 } else {
                     JOptionPane.showMessageDialog(frame, "Invalid username or password", "Login Failed", JOptionPane.ERROR_MESSAGE);
                 }
@@ -90,6 +93,7 @@ public class LoginForm extends WindowAdapter implements ActionListener{
         usernameLabel = new JLabel("Username: ");
         passwordLabel = new JLabel("Password: ");
         addNewLabel = new JLabel("not registered? ");
+        guestLabel = new JLabel("Login as Guest");
 
         usernameField = new JTextField(15);
         passwordField = new JPasswordField(15);
@@ -97,11 +101,11 @@ public class LoginForm extends WindowAdapter implements ActionListener{
         loginButton = new JButton("login ");
         resetButton = new JButton("reset ");
         addNewButton = new JButton("add new ");
+        guestButton = new JButton("Guest mode ");
 
     }
 
     private void addComp(){
-        // adding components
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.gridwidth = 2; // Span across 2 columns
@@ -141,6 +145,13 @@ public class LoginForm extends WindowAdapter implements ActionListener{
 
         gbc.gridy = 2;
         frame.add(passwordField, gbc);
+
+        gbc.gridy = 5;
+        gbc.gridx = 0;
+        frame.add(guestLabel, gbc);
+
+        gbc.gridx = 1;
+        frame.add(guestButton, gbc);
     }
 
     private void addActionListener(){
@@ -148,6 +159,7 @@ public class LoginForm extends WindowAdapter implements ActionListener{
         loginButton.addActionListener(this);
         resetButton.addActionListener(this);
         addNewButton.addActionListener(this);
+        guestButton.addActionListener(this);
     }
 }
 

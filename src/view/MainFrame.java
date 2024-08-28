@@ -28,7 +28,6 @@ public class MainFrame extends WindowAdapter implements ActionListener {
     private JLabel lblBooksReturnedToday;
 
     private BookDAO bookDAO;
-    private UserDAO userDAO;
 
     public MainFrame() {
         initializeFrame();
@@ -37,7 +36,6 @@ public class MainFrame extends WindowAdapter implements ActionListener {
 
 
         this.bookDAO = new BookDAO();
-        this.userDAO = new UserDAO();
 
         addHeaderPanel();
         addNavigationPanel();
@@ -65,7 +63,13 @@ public class MainFrame extends WindowAdapter implements ActionListener {
 
         JPanel headerPanel = new JPanel(null);
         headerPanel.setBounds(10, 10, 580, 30);
-        JLabel lblWelcome = new JLabel("Welcome, " + currentUser.getFullName());
+
+        JLabel lblWelcome = null;
+        if (currentUser!=null) {
+            lblWelcome = new JLabel("Welcome, " + currentUser.getFullName());
+        }else
+            lblWelcome = new JLabel("Welcome, " + "Guest");
+
         lblWelcome.setFont(new Font("Tahoma", Font.BOLD, 16));
         lblWelcome.setBounds(0, 0, 580, 30);
         lblWelcome.setHorizontalAlignment(SwingConstants.CENTER);
